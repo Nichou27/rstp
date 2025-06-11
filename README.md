@@ -20,15 +20,14 @@ See the [LICENSE.md](./LICENSE.md) file for details.
 
 - [Next.js](https://nextjs.org/)
 - [Supabase](https://supabase.com/) (PostgreSQL + Auth)
-- [Tailwind CSS](https://tailwindcss.com/) for styling
 - [postgres.js](https://github.com/porsager/postgres) for database queries
 
 ## ⚙️ Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/tu-usuario/ofihub.git
-cd ofihub
+git clone https://github.com/Nichou27/rstp.git
+cd rstp
 
 # Install dependencies
 npm install
