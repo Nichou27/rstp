@@ -3,8 +3,7 @@
 import { Home, Map, List, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import clsx from "clsx";
-import { Toggle } from "@/components/ui/toggle";
+import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/", label: "Inicio", icon: Home },
@@ -23,15 +22,25 @@ export default function NavLinks() {
             <Link
               key={link.label}
               href={link.href}
-              className={clsx(
-              "flex h-14 grow items-center justify-center bg-primary gap-2 p-3 text-sm font-medium hover:bg-primary-hover",
+              className={cn(
+              "flex flex-col h-16 grow items-center justify-center bg-primary gap-1 text-sm font-medium hover:bg-primary-hover active:bg-primary-active md:hidden",
               {
-                "bg-primary-active": pathname === link.href,
+                "border-t-2 border-violet-800": pathname === link.href,
               }
             )}
             >
-              <Icon className="h-5 w-5 mb-0.5 text-primary-foreground" />
-              <p className="text-primary-foreground">{link.label}</p>
+              <Icon className={cn(
+                "h-5 w-5 mb-0.5 text-primary-foreground",
+                {
+                  "text-violet-800": pathname === link.href
+                }
+                )} />
+              <p className={cn(
+                "text-primary-foreground",
+                { 
+                  "text-violet-800": pathname === link.href 
+                }
+                )}>{link.label}</p>
             </Link>
           );
         })}
