@@ -11,7 +11,7 @@ export const SearchBar = () => {
             type="text"
             name="search"
             placeholder="Encontrá tu servicio"
-            className="pl-10 h-12 text-base placeholder:text-muted-foreground"
+            className="pl-10 h-12 text-base bg-secondary placeholder:text-muted-foreground shadow shadow-primary"
           />
           </div>
         </div>
