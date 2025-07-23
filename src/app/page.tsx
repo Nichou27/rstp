@@ -14,7 +14,6 @@
 
 import CarouselCard from "./ui/home/carousel-card";
 
-
 export default function Home() {
   return (
     <main>
@@ -22,5 +21,5 @@ export default function Home() {
         <CarouselCard />
       </div>
     </main>
-  )
+  );
 }

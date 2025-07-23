@@ -21,18 +21,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Risp | Find Your Service",
-  description: "Risp is a simple network thought for real-life professionals and technicians.",
+  description:
+    "Risp is a simple network thought for real-life professionals and technicians.",
   authors: [
     {
       name: "Ignacio Gonzalez Acuña",
     },
   ],
-  keywords: [
-    "Risp",
-    "network",
-    "professionals",
-    "technicians"
-  ]
+  keywords: ["Risp", "network", "professionals", "technicians"],
 };
 
 export const viewport: Viewport = {
@@ -49,13 +45,13 @@ export default function RootLayout({
     <html lang="es" className="dark">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div className="md:flex md:justify-center md:w-full">
-        <Header>
-          <HeaderNav />
-          <LoginButton />
-          <CreateAccountButton />
-          <LocationButton />
-          <SearchBar />
-        </Header>
+          <Header>
+            <HeaderNav />
+            <LoginButton />
+            <CreateAccountButton />
+            <LocationButton />
+            <SearchBar />
+          </Header>
         </div>
         {children}
         <FooterNav />
