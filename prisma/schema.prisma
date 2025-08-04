@@ -1,6 +1,5 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
@@ -15,14 +14,14 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
+  id           String    @id @default(uuid())
   firstName    String
   lastName     String
   email        String    @unique
   password     String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  directionId  Int?      @unique
+  directionId  String?   @unique
   direction    Direction? @relation(fields: [directionId], references: [id])
   services     Service[]
   bookings     Booking[]
@@ -32,22 +31,22 @@ model User {
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-  name String
+  id       String    @id @default(uuid())
+  name     String
   services Service[]
 }
 
 model Service {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid())
   name        String
   description String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  userId      Int
+  userId      String
   user        User      @relation(fields: [userId], references: [id])
-  categoryId  Int
+  categoryId  String
   category    Category  @relation(fields: [categoryId], references: [id])
-  directionId Int?
+  directionId String?
   direction   Direction? @relation(fields: [directionId], references: [id])
   bookings    Booking[]
   reviews     Review[]
@@ -61,70 +60,70 @@ enum BookingState {
 }
 
 model Booking {
-  id Int @id @default(autoincrement())
-  date DateTime
-  state BookingState
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId Int
-  user User @relation(fields: [userId], references: [id])
-  serviceId Int
-  service Service @relation(fields: [serviceId], references: [id])
+  id        String       @id @default(uuid())
+  date      DateTime
+  state     BookingState
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  serviceId String
+  service   Service      @relation(fields: [serviceId], references: [id])
 }
 
 model Review {
-  id Int @id @default(autoincrement())
-  rating Int
-  comment String
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId Int
-  user User @relation(fields: [userId], references: [id])
-  serviceId Int
-  service Service @relation(fields: [serviceId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id])
 }
 
 model Message {
-  id Int @id @default(autoincrement())
-  content String
-  isRead Boolean @default(false)
-  createdAt DateTime @default(now())
-  senderId Int
-  sender User @relation("SentMessages", fields: [senderId], references: [id])
-  receiverId Int
-  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  id         String   @id @default(uuid())
+  content    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }
 
 model Country {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     String  @id @default(uuid())
+  name   String  @unique
   states State[]
 }
 
 model State {
-  id        Int     @id @default(autoincrement())
+  id        String  @id @default(uuid())
   name      String
-  countryId Int
+  countryId String
   country   Country @relation(fields: [countryId], references: [id])
   zones     Zone[]
 }
 
 model Zone {
-  id      Int     @id @default(autoincrement())
-  name    String
-  stateId Int
-  state   State   @relation(fields: [stateId], references: [id])
+  id         String      @id @default(uuid())
+  name       String
+  stateId    String
+  state      State       @relation(fields: [stateId], references: [id])
   directions Direction[]
 }
 
 model Direction {
-  id        Int     @id @default(autoincrement())
-  street    String
-  number    String
-  zipCode   String
-  notes     String?
-  zoneId    Int
-  zone      Zone    @relation(fields: [zoneId], references: [id])
-  user      User?
-  services  Service[]
+  id       String    @id @default(uuid())
+  street   String
+  number   String
+  zipCode  String
+  notes    String?
+  zoneId   String
+  zone     Zone      @relation(fields: [zoneId], references: [id])
+  user     User?
+  services Service[]
 }
