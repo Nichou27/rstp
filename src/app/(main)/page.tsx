@@ -12,7 +12,7 @@
  * Change License: Apache 2.0
  */
 
-import CarouselCard from "./ui/home/carousel-card";
+import CarouselCard from "../ui/home/carousel-card";
 
 export default function Home() {
   return (
