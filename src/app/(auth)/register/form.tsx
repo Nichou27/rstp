@@ -86,9 +86,11 @@ export function RegisterForm() {
 
   useEffect(() => {
     if (selectedCountryId) {
-      setStates(ALL_STATES.filter((s) => s.countryId === selectedCountryId));
-      form.setValue("stateId", 0);
-      form.setValue("zoneId", 0);
+      setStates(
+        ALL_STATES.filter((s) => s.countryId === Number(selectedCountryId))
+      );
+      form.setValue("stateId", "0");
+      form.setValue("zoneId", "0");
       setZones([]);
     } else {
       setStates([]);
@@ -98,8 +100,8 @@ export function RegisterForm() {
 
   useEffect(() => {
     if (selectedStateId) {
-      setZones(ALL_ZONES.filter((z) => z.stateId === selectedStateId));
-      form.setValue("zoneId", 0);
+      setZones(ALL_ZONES.filter((z) => z.stateId === Number(selectedStateId)));
+      form.setValue("zoneId", "0");
     } else {
       setZones([]);
     }
