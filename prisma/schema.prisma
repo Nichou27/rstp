@@ -53,7 +53,6 @@ model Service {
   reviews     Review[]
 }
 
-
 enum BookingState {
   PENDING
   ACCEPTED
@@ -92,8 +91,8 @@ model Message {
   createdAt DateTime @default(now())
   senderId Int
   sender User @relation("SentMessages", fields: [senderId], references: [id])
-  recieverId Int
-  reciever User @relation("ReceivedMessages", fields: [recieverId], references: [id])
+  receiverId Int
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }
 
 model Country {
