@@ -28,8 +28,8 @@ model User {
   isVerified   Boolean   @default(false)
   rating       Decimal?  @db.Decimal(2, 1)
   totalReviews Int      @default(0)
-  directionId  String?   @unique
-  direction    Direction? @relation(fields: [directionId], references: [id])
+  directionId  String   @unique
+  direction    Direction @relation(fields: [directionId], references: [id])
   services     Service[]
   bookings     Booking[]
   reviews      Review[]
@@ -46,6 +46,7 @@ model Category {
   name     String    @unique @db.VarChar(100)
   slug     String    @unique @db.VarChar(100) // Friendly URL
   services Service[]
+  @@index([name])
 }
 
 model Service {
@@ -72,6 +73,7 @@ model Service {
   @@index([categoryId])
   @@index([createdAt])
   @@index([deletedAt])
+  @@index([name])
 }
 
 enum BookingState {
