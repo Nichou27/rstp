@@ -21,6 +21,13 @@ model User {
   password     String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  phoneNumber  String?   @db.VarChar(20)
+  profileImage String?   
+  bio          String?   @db.Text
+  isWorker     Boolean   @default(false)
+  isVerified   Boolean   @default(false)
+  rating       Decimal?  @db.Decimal(2, 1)
+  totalReviews Int      @default(0)
   directionId  String?   @unique
   direction    Direction? @relation(fields: [directionId], references: [id])
   services     Service[]
@@ -28,11 +35,16 @@ model User {
   reviews      Review[]
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
+  notifications    Notification[]
+  availability Availability[]
+  @@index([createdAt])
+  @@index([firstName, lastName])
 }
 
 model Category {
   id       String    @id @default(uuid())
-  name     String
+  name     String    @unique @db.VarChar(100)
+  slug     String    @unique @db.VarChar(100) // Friendly URL
   services Service[]
 }
 
@@ -42,14 +54,24 @@ model Service {
   description String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  price       Decimal?  @db.Decimal(10, 2)
+  duration    Int?
+  isActive    Boolean   @default(true)
+  imageUrl    String[]
+  tags        String[]
   userId      String
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   categoryId  String
-  category    Category  @relation(fields: [categoryId], references: [id])
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   directionId String?
   direction   Direction? @relation(fields: [directionId], references: [id])
   bookings    Booking[]
   reviews     Review[]
+  @@index([userId])
+  @@index([categoryId])
+  @@index([createdAt])
+  @@index([deletedAt])
 }
 
 enum BookingState {
@@ -65,15 +87,48 @@ model Booking {
   state     BookingState
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
+  startTime DateTime?
+  endTime   DateTime?
+  totalAmount Decimal?   @db.Decimal(10, 2)
+  notes     String?      @db.Text
+  isPaid    Boolean      @default(false)
+  cancelReason String?   
   userId    String
-  user      User         @relation(fields: [userId], references: [id])
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   serviceId String
-  service   Service      @relation(fields: [serviceId], references: [id])
+  service   Service      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  payment   Payment?
+  @@index([userId])
+  @@index([serviceId])
+  @@index([date])
+  @@index([state])
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  amount        Decimal       @db.Decimal(10,2)
+  currency      String        @default("ARS") @db.VarChar(3)
+  status        PaymentStatus
+  paymentMethod String        @db.VarChar(50)
+  transactionId String?       @unique
+  bookingId     String        @unique
+  booking       Booking       @relation(fields: [bookingId], references: [id])
+  createdAt     DateTime      @default(now())
+  
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
 }
 
 model Review {
   id        String   @id @default(uuid())
-  rating    Int
+  rating    Int      @db.SmallInt
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -81,6 +136,7 @@ model Review {
   user      User     @relation(fields: [userId], references: [id])
   serviceId String
   service   Service  @relation(fields: [serviceId], references: [id])
+  @@unique([userId, serviceId])
 }
 
 model Message {
@@ -92,6 +148,40 @@ model Message {
   sender     User     @relation("SentMessages", fields: [senderId], references: [id])
   receiverId String
   receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+model Availability {
+  id       String   @id @default(uuid())
+  dayOfWeek Int     
+  startTime DateTime
+  endTime   DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  @@index([userId, dayOfWeek, startTime, endTime])
+}
+
+model Notification {
+  id        String             @id @default(uuid())
+  title     String             @db.VarChar(255)
+  message   String             @db.Text
+  type      NotificationType
+  isRead    Boolean            @default(false)
+  userId    String
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime           @default(now())
+  
+  @@index([userId, isRead])
+  @@index([createdAt])
+}
+
+enum NotificationType {
+  BOOKING_REQUEST
+  BOOKING_ACCEPTED
+  BOOKING_CANCELLED
+  NEW_REVIEW
+  PAYMENT_RECEIVED
+  SYSTEM
 }
 
 model Country {
@@ -122,8 +212,11 @@ model Direction {
   number   String
   zipCode  String
   notes    String?
+  latitude Decimal?  @db.Decimal(10, 8)
+  longitude Decimal? @db.Decimal(11, 8)
   zoneId   String
   zone     Zone      @relation(fields: [zoneId], references: [id])
   user     User?
   services Service[]
+  @@index([latitude, longitude])
 }
