@@ -3,66 +3,41 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/lib/validators/register-schema";
-import { Input } from "@/components/ui/input";
+import { useLocationData } from "@/hooks/useLocationData";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription, // Podemos añadir descripciones si es necesario
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useEffect, useState } from "react";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 import z from "zod";
-import router, { useRouter } from "next/router";
-import { toast } from "sonner";
-
-type RegisterResponse =
-  | {
-      success: true;
-      message: string;
-      userId: number;
-    }
-  | {
-      success: false;
-      message?: string;
-      errors?: Record<string, string[]>;
-    };
-
-// --- Simulación de datos de una API ---
-// En una app real, esto vendría de una llamada a tu backend (ej. Supabase)
-const ALL_COUNTRIES = [
-  { id: 1, name: "Argentina" },
-  { id: 2, name: "Chile" },
-];
-const ALL_STATES = [
-  { id: 1, name: "Mendoza", countryId: 1 },
-  { id: 2, name: "Buenos Aires", countryId: 1 },
-  { id: 3, name: "Región Metropolitana", countryId: 2 },
-];
-const ALL_ZONES = [
-  { id: 1, name: "Luján de Cuyo", stateId: 1 },
-  { id: 2, name: "Tupungato", stateId: 1 },
-  { id: 3, name: "La Plata", stateId: 2 },
-  { id: 4, name: "Santiago Centro", stateId: 3 },
-];
-// --- Fin de la simulación ---
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
 
 export function RegisterForm() {
-  const [states, setStates] = useState<{ id: number; name: string }[]>([]);
-  const [zones, setZones] = useState<{ id: number; name: string }[]>([]);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isCountryPopoverOpen, setCountryPopoverOpen] = useState(false);
+  const [isStatePopoverOpen, setStatePopoverOpen] = useState(false);
+  const [isZonePopoverOpen, setZonePopoverOpen] = useState(false);
 
   const form = useForm<z.input<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -71,7 +46,6 @@ export function RegisterForm() {
       lastName: "",
       email: "",
       password: "",
-      confirmPassword: "",
       street: "",
       number: "",
       zipCode: "",
@@ -79,80 +53,44 @@ export function RegisterForm() {
     },
   });
 
-  const { isSubmitting } = form.formState;
+  const {
+    countries,
+    states,
+    zones,
+    setSelectedCountryId,
+    setSelectedStateId,
+    isLoading: isLoadingLocation,
+  } = useLocationData();
 
-  const selectedCountryId = form.watch("countryId");
-  const selectedStateId = form.watch("stateId");
-
-  useEffect(() => {
-    if (selectedCountryId) {
-      setStates(
-        ALL_STATES.filter((s) => s.countryId === Number(selectedCountryId))
-      );
-      form.setValue("stateId", "0");
-      form.setValue("zoneId", "0");
-      setZones([]);
-    } else {
-      setStates([]);
-      setZones([]);
-    }
-  }, [selectedCountryId, form]);
-
-  useEffect(() => {
-    if (selectedStateId) {
-      setZones(ALL_ZONES.filter((z) => z.stateId === Number(selectedStateId)));
-      form.setValue("zoneId", "0");
-    } else {
-      setZones([]);
-    }
-  }, [selectedStateId, form]);
-
-  const onSubmit = async (values: z.input<typeof registerSchema>) => {
+  const onSubmit = async (data: z.input<typeof registerSchema>) => {
+    setIsSubmitting(true);
+    setError(null);
     try {
-      const res = await fetch("/api/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
 
-      const data: RegisterResponse = await res.json();
-
-      if (!data.success) {
-        if (data.errors) {
-          for (const [field, messages] of Object.entries(data.errors)) {
-            messages.forEach((message) => {
-              form.setError(field as keyof z.input<typeof registerSchema>, {
-                type: "manual",
-                message,
-              });
-            });
-          }
-        }
-
-        if (data.message) {
-          toast.error(data.message);
-        }
-
-        return;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "Ocurrió un error en el registro."
+        );
       }
 
-      toast.success(data.message);
-      form.reset();
-    } catch (error) {
-      console.error("Error en el registro:", error);
-      toast.error("Ocurrió un error al registrar el usuario");
+      console.log("Usuario registrado con éxito!");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error desconocido");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <h2 className="text-xl font-semibold border-b pb-2">
-          Datos Personales
-        </h2>
-        <div className="grid md:grid-cols-2 gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="firstName"
@@ -166,6 +104,7 @@ export function RegisterForm() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="lastName"
@@ -173,249 +112,295 @@ export function RegisterForm() {
               <FormItem>
                 <FormLabel>Apellido</FormLabel>
                 <FormControl>
-                  <Input placeholder="Pérez" {...field} />
+                  <Input placeholder="Rodriguez" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
-        </div>
 
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Correo electrónico</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="correo@ejemplo.com"
-                  autoComplete="email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="mail@gmail.com" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <div className="grid md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="password">Contraseña</FormLabel>
+                <FormLabel>Contraseña</FormLabel>
                 <FormControl>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                      {...field}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
-                    >
-                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
-                  </div>
+                  <Input placeholder="********" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="confirmPassword">
-                  Confirmar Contraseña
-                </FormLabel>
+                <FormLabel>Repetir Contraseña</FormLabel>
                 <FormControl>
-                  <div className="relative">
-                    <Input
-                      type={showConfirmPassword ? "text" : "password"}
-                      id="confirmPassword"
-                      {...field}
-                    />
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                      className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500"
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff size={18} />
-                      ) : (
-                        <Eye size={18} />
-                      )}
-                    </button>
-                  </div>
+                  <Input placeholder="********" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
         </div>
 
-        <h2 className="text-xl font-semibold border-b pb-2 pt-4">
-          Dirección de Envío
-        </h2>
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <FormField
             control={form.control}
             name="countryId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>País</FormLabel>
-                <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  value={field.value?.toString()}
+                <Popover
+                  open={isCountryPopoverOpen}
+                  onOpenChange={setCountryPopoverOpen}
                 >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona un país" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent id="country-select">
-                    {ALL_COUNTRIES.map((c) => (
-                      <SelectItem
-                        key={c.id}
-                        value={c.id.toString()}
-                        id={c.id.toString()}
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        disabled={isLoadingLocation}
+                        className={cn(
+                          "w-full justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
                       >
-                        {c.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
+                        {field.value
+                          ? countries.find(
+                              (country) => country.id === field.value
+                            )?.name
+                          : "Selecciona un país"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                    <Command>
+                      <CommandInput placeholder="Buscar país" />
+                      <CommandEmpty>No se encontró el país</CommandEmpty>
+                      <CommandGroup>
+                        {countries.map((country) => (
+                          <CommandItem
+                            value={country.name}
+                            key={country.id}
+                            onSelect={() => {
+                              form.setValue("countryId", country.id);
+                              setSelectedCountryId(country.id);
+                              form.resetField("stateId");
+                              form.resetField("zoneId");
+                              setCountryPopoverOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                country.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {country.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="stateId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Región</FormLabel>
-                <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  value={field.value?.toString()}
-                  disabled={!selectedCountryId || states.length === 0}
+                <FormLabel>Provincia</FormLabel>
+                <Popover
+                  open={isStatePopoverOpen}
+                  onOpenChange={setStatePopoverOpen}
                 >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona una región" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent id="state-select">
-                    {states.map((s) => (
-                      <SelectItem
-                        key={s.id}
-                        value={s.id.toString()}
-                        id={s.id.toString()}
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        disabled={states.length === 0 || isLoadingLocation}
+                        className={cn(
+                          "w-full justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
                       >
-                        {s.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
+                        {field.value
+                          ? states.find((state) => state.id === field.value)
+                              ?.name
+                          : "Selecciona una provincia"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                    <Command>
+                      <CommandInput placeholder="Buscar provincia" />
+                      <CommandEmpty>No se encontró la provincia</CommandEmpty>
+                      <CommandGroup className="max-h-52 overflow-y-auto">
+                        {states.map((state) => (
+                          <CommandItem
+                            value={state.name}
+                            key={state.id}
+                            onSelect={() => {
+                              form.setValue("stateId", state.id);
+                              setSelectedStateId(state.id);
+                              form.resetField("zoneId");
+                              setStatePopoverOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                state.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {state.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="zoneId"
             render={({ field }) => (
-              <FormItem id="zone-field">
-                <FormLabel>Zona</FormLabel>
-                <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  value={field.value?.toString()}
-                  disabled={!selectedStateId || zones.length === 0}
+              <FormItem>
+                <FormLabel>Ciudad</FormLabel>
+                <Popover
+                  open={isZonePopoverOpen}
+                  onOpenChange={setZonePopoverOpen}
                 >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona una zona" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent id="zone-select">
-                    {zones.map((z) => (
-                      <SelectItem
-                        key={z.id}
-                        value={z.id.toString()}
-                        id={z.id.toString()}
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        disabled={zones.length === 0 || isLoadingLocation}
+                        className={cn(
+                          "w-full justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
                       >
-                        {z.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
+                        {field.value
+                          ? zones.find((zone) => zone.id === field.value)?.name
+                          : "Selecciona una ciudad"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                    <Command>
+                      <CommandInput placeholder="Buscar ciudad" />
+                      <CommandEmpty>No se encontró la ciudad</CommandEmpty>
+                      <CommandGroup className="max-h-52 overflow-y-auto">
+                        {zones.map((zone) => (
+                          <CommandItem
+                            value={zone.name}
+                            key={zone.id}
+                            onSelect={() => {
+                              form.setValue("zoneId", zone.id);
+                              setZonePopoverOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                zone.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {zone.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </FormItem>
             )}
           />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <FormField
             control={form.control}
             name="street"
             render={({ field }) => (
-              <FormItem className="md:col-span-2">
+              <FormItem>
                 <FormLabel>Calle</FormLabel>
                 <FormControl>
-                  <Input placeholder="Av. Siempre Viva" {...field} />
+                  <Input placeholder="Av. San Martín" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="number"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Número</FormLabel>
+                <FormLabel>Número de Calle</FormLabel>
                 <FormControl>
-                  <Input placeholder="742" {...field} />
+                  <Input placeholder="351" {...field} />
                 </FormControl>
-                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="zipCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Código Postal</FormLabel>
+                <FormControl>
+                  <Input placeholder="5561" {...field} />
+                </FormControl>
               </FormItem>
             )}
           />
         </div>
-
-        <FormField
-          control={form.control}
-          name="zipCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Código postal</FormLabel>
-              <FormControl>
-                <Input placeholder="5561" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         <FormField
           control={form.control}
           name="notes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notas adicionales (opcional)</FormLabel>
+              <FormLabel>Notas Adicionales</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ej: Dejar en portería, tocar timbre depto 5B..."
+                <Textarea
+                  placeholder="Ej: Casa color verde, portón negro..."
                   {...field}
                 />
               </FormControl>
@@ -424,8 +409,11 @@ export function RegisterForm() {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {error && (
+          <p className="text-sm font-medium text-destructive">{error}</p>
+        )}
+
+        <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? "Registrando..." : "Crear Cuenta"}
         </Button>
       </form>
