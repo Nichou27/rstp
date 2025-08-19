@@ -23,7 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Eye, EyeOff } from "lucide-react";
 import {
   Command,
   CommandEmpty,
@@ -31,13 +31,17 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isCountryPopoverOpen, setCountryPopoverOpen] = useState(false);
   const [isStatePopoverOpen, setStatePopoverOpen] = useState(false);
   const [isZonePopoverOpen, setZonePopoverOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<z.input<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -46,10 +50,14 @@ export function RegisterForm() {
       lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
       street: "",
       number: "",
       zipCode: "",
       notes: "",
+      countryId: "",
+      stateId: "",
+      zoneId: "",
     },
   });
 
@@ -64,7 +72,6 @@ export function RegisterForm() {
 
   const onSubmit = async (data: z.input<typeof registerSchema>) => {
     setIsSubmitting(true);
-    setError(null);
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -72,16 +79,21 @@ export function RegisterForm() {
         body: JSON.stringify(data),
       });
 
+      const responseData = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
         throw new Error(
-          errorData.message || "Ocurrió un error en el registro."
+          responseData.message || "Ocurrió un error en el registro."
         );
       }
 
-      console.log("Usuario registrado con éxito!");
+      toast.success("Registro exitoso", {
+        description: "Tu cuenta ha sido creada exitosamente",
+      });
+      form.reset();
+      router.push("/");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error desconocido");
+      toast.error(`Error en el registro: ${err}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -137,9 +149,26 @@ export function RegisterForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Contraseña</FormLabel>
-                <FormControl>
-                  <Input placeholder="********" {...field} />
-                </FormControl>
+                <div className="relative">
+                  <FormControl>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="********"
+                      {...field}
+                    />
+                  </FormControl>
+                  <button
+                    type="button"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
               </FormItem>
             )}
           />
@@ -150,9 +179,26 @@ export function RegisterForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Repetir Contraseña</FormLabel>
-                <FormControl>
-                  <Input placeholder="********" {...field} />
-                </FormControl>
+                <div className="relative">
+                  <FormControl>
+                    <Input
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="********"
+                      {...field}
+                    />
+                  </FormControl>
+                  <button
+                    type="button"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
               </FormItem>
             )}
           />
@@ -401,6 +447,7 @@ export function RegisterForm() {
               <FormControl>
                 <Textarea
                   placeholder="Ej: Casa color verde, portón negro..."
+                  className="resize-none h-20 min-w-2xs max-w-2xs md:max-w-3xl"
                   {...field}
                 />
               </FormControl>
@@ -408,10 +455,6 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-
-        {error && (
-          <p className="text-sm font-medium text-destructive">{error}</p>
-        )}
 
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? "Registrando..." : "Crear Cuenta"}
