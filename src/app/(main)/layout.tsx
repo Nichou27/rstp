@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Risp | Find Your Service",
+  title: "Risp | Encontrá tu servicio",
   description:
     "Risp is a simple network thought for real-life professionals and technicians.",
   authors: [

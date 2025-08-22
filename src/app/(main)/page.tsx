@@ -13,6 +13,7 @@
  */
 
 import CarouselCard from "../ui/home/carousel-card";
+import Footer from "../ui/home/footer";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <div className="w-full flex justify-center">
         <CarouselCard />
       </div>
+      <Footer />
     </main>
   );
 }
