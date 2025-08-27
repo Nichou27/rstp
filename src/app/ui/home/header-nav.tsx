@@ -1,10 +1,11 @@
-import { NavigationMenu,
-  NavigationMenuContent, 
-  NavigationMenuItem, 
-  NavigationMenuLink, 
-  NavigationMenuList, 
-  NavigationMenuTrigger 
-} from "@/components/ui/navigation-menu"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import Link from "next/link";
 
 export const HeaderNav = () => {
@@ -13,7 +14,7 @@ export const HeaderNav = () => {
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Home</NavigationMenuTrigger>
-            <NavigationMenuContent>
+          <NavigationMenuContent>
             <NavigationMenuLink asChild>
               <Link href="/">Risp</Link>
             </NavigationMenuLink>
@@ -21,7 +22,7 @@ export const HeaderNav = () => {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
-            <Link href="/mapa">
+            <Link href="/map">
               <p className="font-medium">Mapa</p>
             </Link>
           </NavigationMenuLink>
@@ -30,13 +31,13 @@ export const HeaderNav = () => {
           <NavigationMenuTrigger>Categorías</NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink asChild>
-              <Link href="/categorias">Ver categorías</Link>
+              <Link href="/categories">Ver categorías</Link>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
-}
+  );
+};
 
 export default HeaderNav;

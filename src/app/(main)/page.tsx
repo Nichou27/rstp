@@ -19,6 +19,19 @@ export default function Home() {
   return (
     <main>
       <div className="w-full flex justify-center">
+        <h2 className="text-2xl p-4 w-xl font-semibold tracking-tight md:w-3xl">
+          Cerca tuyo
+        </h2>
+      </div>
+      <div className="w-full flex justify-center">
+        <CarouselCard />
+      </div>
+      <div className="w-full flex justify-center mt-3">
+        <h2 className="text-2xl p-4 w-xl font-semibold tracking-tight md:w-3xl">
+          Mejor Puntuados
+        </h2>
+      </div>
+      <div className="w-full flex justify-center">
         <CarouselCard />
       </div>
       <Footer />
