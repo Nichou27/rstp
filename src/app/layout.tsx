@@ -1,5 +1,6 @@
 import { Toaster } from "sonner";
 import "src/app/globals.css";
+import "leaflet/dist/leaflet.css";
 
 export default function RootLayout({
   children,
