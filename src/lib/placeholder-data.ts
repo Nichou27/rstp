@@ -138,4 +138,75 @@ const services = [
   },
 ];
 
-export { professionals, services };
+const users = {
+  id: "123e4567-e89b-12d3-a456-426614174000",
+  firstName: "María",
+  lastName: "González",
+  email: "maria.gonzalez@email.com",
+  phoneNumber: "+54 261 123-4567",
+  profileImage:
+    "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+  bio: "Diseñadora gráfica con más de 5 años de experiencia en branding y marketing digital. Me especializo en crear identidades visuales únicas que conecten con tu audiencia.",
+  isWorker: true,
+  isVerified: true,
+  rating: 4.8,
+  totalReviews: 127,
+  createdAt: new Date("2022-03-15"),
+  updatedAt: new Date("2024-12-01"),
+  direction: {
+    street: "San Martín 1234",
+    city: "Mendoza",
+    province: "Mendoza",
+    country: "Argentina",
+  },
+};
+
+const userServices = [
+  {
+    id: "service-1",
+    name: "Diseño de Logo Profesional",
+    description:
+      "Creación de logo único y profesional para tu marca, incluyendo manual de identidad básico con colores y tipografías.",
+    price: 25000,
+    duration: 7,
+    imageUrl: [
+      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&h=300&fit=crop",
+    ],
+    tags: ["Logo", "Branding", "Identidad Visual"],
+    isActive: true,
+    createdAt: new Date("2024-01-15"),
+    category: { name: "Diseño Gráfico" },
+  },
+  {
+    id: "service-2",
+    name: "Diseño de Redes Sociales",
+    description:
+      "Pack completo de diseños para redes sociales: posts, stories, covers. Incluye plantillas editables.",
+    price: 18000,
+    duration: 5,
+    imageUrl: [
+      "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop",
+    ],
+    tags: ["Social Media", "Instagram", "Facebook"],
+    isActive: true,
+    createdAt: new Date("2024-02-01"),
+    category: { name: "Marketing Digital" },
+  },
+  {
+    id: "service-3",
+    name: "Tarjetas de Presentación",
+    description:
+      "Diseño profesional de tarjetas de presentación con acabados premium. Incluye archivos para impresión.",
+    price: 8000,
+    duration: 3,
+    imageUrl: [
+      "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=400&h=300&fit=crop",
+    ],
+    tags: ["Tarjetas", "Impresión", "Corporativo"],
+    isActive: true,
+    createdAt: new Date("2024-01-20"),
+    category: { name: "Material Impreso" },
+  },
+];
+
+export { professionals, services, users, userServices };

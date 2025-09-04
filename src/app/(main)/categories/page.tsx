@@ -10,7 +10,7 @@ import { services } from "@/lib/placeholder-data";
 export default function Categories() {
   return (
     <main>
-      <div className="min-h-screen bg-pimary py-2 px-4 mb-16 sm:px-6 lg:px-8">
+      <div className="min-h-screen py-2 px-4 mb-16 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {services.map((service) => {
