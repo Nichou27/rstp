@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const LeafletMap = dynamic(() => import("@/app/ui/map/map"), {
+const LeafletMap = dynamic(() => import("@/app/(main)/map/components/map"), {
   ssr: false,
 });
 

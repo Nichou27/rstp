@@ -1,4 +1,4 @@
-import NavLinks from "./nav-links"
+import NavLinks from "@/app/(main)/components/nav-links";
 
 export const FooterNav = () => {
   return (
@@ -7,7 +7,7 @@ export const FooterNav = () => {
         <NavLinks />
       </nav>
     </footer>
-  )
-}
+  );
+};
 
 export default FooterNav;

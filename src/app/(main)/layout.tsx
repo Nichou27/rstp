@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { FooterNav } from "../ui/home/footer-nav";
-import Header from "../ui/home/header";
-import SearchBar from "../ui/home/search-bar";
-import LocationButton from "../ui/home/location-button";
-import HeaderNav from "../ui/home/header-nav";
-import LoginButton from "../ui/home/login-button";
-import CreateAccountButton from "../ui/home/create-account-button";
+import { FooterNav } from "@/app/(main)/components/footer-nav";
+import Header from "./components/header";
+import SearchBar from "./components/search-bar";
+import LocationButton from "./components/location-button";
+import HeaderNav from "./components/header-nav";
+import LoginButton from "./components/login-button";
+import CreateAccountButton from "./components/create-account-button";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

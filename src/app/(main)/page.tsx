@@ -12,8 +12,8 @@
  * Change License: Apache 2.0
  */
 
-import CarouselCard from "../ui/home/carousel-card";
-import Footer from "../ui/home/footer";
+import CarouselCard from "./home/components/carousel-card";
+import Footer from "./home/components/footer";
 
 export default function Home() {
   return (
