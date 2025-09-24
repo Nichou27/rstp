@@ -18,7 +18,7 @@ import { Star } from "lucide-react";
 
 export const CarouselCard = () => {
   return (
-    <Card className="w-lg mx-7 md:w-2xl">
+    <Card className="w-lg mx-7 md:w-2xl bg-secondary shadow-md">
       <CardHeader className="px-8">
         <CardTitle>
           <div className="flex w-full">

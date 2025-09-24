@@ -30,7 +30,7 @@ export function CategoryCard({ service }: CategoryCardProps) {
       href={`/categories/${service.slug}`}
       className="group block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
     >
-      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 border-0 bg-primary backdrop-blur-sm py-0">
+      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 border-0 bg-secondary backdrop-blur-sm py-0">
         <CardHeader className="p-0">
           <div className="relative overflow-hidden">
             <Image
@@ -50,7 +50,7 @@ export function CategoryCard({ service }: CategoryCardProps) {
         </CardHeader>
 
         <CardContent className="p-4 sm:p-6 flex flex-col h-full">
-          <CardTitle className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+          <CardTitle className="text-lg sm:text-xl font-semibold text-secondary-foreground mb-2 group-hover:text-blue-600 transition-colors">
             {service.title}
           </CardTitle>
           <CardDescription className="text-sm sm:text-base text-gray-600 leading-relaxed">

@@ -12,7 +12,7 @@ const ServiceList = () => {
     <>
       {users.isWorker && (
         <div className="lg:col-span-2 mb-12">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-secondary rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-gray-900">
                 Mis Servicios

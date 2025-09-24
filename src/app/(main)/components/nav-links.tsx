@@ -23,19 +23,19 @@ export default function NavLinks() {
             key={link.label}
             href={link.href}
             className={cn(
-              "flex flex-col h-16 grow items-center justify-center bg-primary gap-1 text-sm font-medium hover:bg-primary-hover active:bg-primary-active md:hidden",
+              "flex flex-col h-16 grow items-center justify-center bg-secondary gap-1 text-sm font-medium hover:bg-secondary-hover active:bg-secondary-active md:hidden",
               {
                 "border-t-2 border-violet-800": pathname === link.href,
               }
             )}
           >
             <Icon
-              className={cn("h-5 w-5 mb-0.5 text-primary-foreground", {
+              className={cn("h-5 w-5 mb-0.5 text-secondary-foreground", {
                 "text-violet-800": pathname === link.href,
               })}
             />
             <p
-              className={cn("text-primary-foreground", {
+              className={cn("text-secondary-foreground", {
                 "text-violet-800": pathname === link.href,
               })}
             >

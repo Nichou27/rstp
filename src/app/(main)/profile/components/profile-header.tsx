@@ -5,7 +5,7 @@ import { Camera, Edit3, Shield } from "lucide-react";
 const ProfileHeader = () => {
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-secondary rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="h-32 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
 
         <div className="px-6 pb-6">
@@ -50,7 +50,7 @@ const ProfileHeader = () => {
                   </p>
                 </div>
 
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                <button className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover active:bg-primary-active text-secondary rounded-lg transition-colors">
                   <Edit3 size={16} />
                   Editar
                 </button>
