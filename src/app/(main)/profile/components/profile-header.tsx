@@ -1,4 +1,4 @@
-import StarRating from "@/components/ui/star-rating";
+import StarRating from "@/app/(main)/components/star-rating";
 import { users } from "@/lib/placeholder-data";
 import { Camera, Edit3, Shield } from "lucide-react";
 

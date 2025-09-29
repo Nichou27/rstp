@@ -7,6 +7,7 @@ import LocationButton from "./components/location-button";
 import HeaderNav from "./components/header-nav";
 import LoginButton from "./components/login-button";
 import CreateAccountButton from "./components/create-account-button";
+import Footer from "./components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,6 +53,7 @@ export default function MainLayout({
         </Header>
       </div>
       {children}
+      <Footer />
       <FooterNav />
     </div>
   );

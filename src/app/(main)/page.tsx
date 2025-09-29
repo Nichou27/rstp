@@ -13,7 +13,6 @@
  */
 
 import CarouselCard from "./home/components/carousel-card";
-import Footer from "./home/components/footer";
 
 export default function Home() {
   return (
@@ -34,7 +33,6 @@ export default function Home() {
       <div className="w-full flex justify-center">
         <CarouselCard />
       </div>
-      <Footer />
     </main>
   );
 }
