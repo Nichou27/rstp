@@ -1,6 +1,7 @@
 import StarRating from "@/app/(main)/components/star-rating";
 import { users } from "@/lib/placeholder-data";
 import { Camera, Edit3, Shield } from "lucide-react";
+import Image from "next/image";
 
 const ProfileHeader = () => {
   return (
@@ -12,10 +13,12 @@ const ProfileHeader = () => {
           <div className="flex flex-col sm:flex-row gap-6 -mt-16">
             <div className="relative">
               <div className="w-32 h-32 rounded-full border-4 border-white bg-white shadow-lg overflow-hidden">
-                <img
+                <Image
                   src={users.profileImage}
                   alt="Profile"
                   className="w-full h-full object-cover"
+                  width={128}
+                  height={128}
                 />
               </div>
               <button className="absolute bottom-2 right-2 p-2 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-colors">
@@ -27,9 +30,9 @@ const ProfileHeader = () => {
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <h1 className="text-2xl font-bold text-gray-900">
+                    <p className="text-2xl font-bold text-gray-900">
                       {users.firstName} {users.lastName}
-                    </h1>
+                    </p>
                     {users.isVerified && (
                       <div className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
                         <Shield size={12} />

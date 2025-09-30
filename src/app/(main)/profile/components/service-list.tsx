@@ -14,9 +14,9 @@ const ServiceList = () => {
         <div className="lg:col-span-2 mb-12">
           <div className="bg-secondary rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <p className="text-lg font-semibold text-gray-900">
                 Mis Servicios
-              </h2>
+              </p>
               <button
                 onClick={() => setShowServices(!showServices)}
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
@@ -31,7 +31,6 @@ const ServiceList = () => {
                 {userServices.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {userServices.map((service) => (
-                      // ¡Aquí la usas!
                       <ServiceCard key={service.id} service={service} />
                     ))}
                   </div>

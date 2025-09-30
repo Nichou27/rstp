@@ -6,9 +6,9 @@ const PersonalInfo = () => {
   return (
     <>
       <div className="bg-secondary rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <p className="text-lg font-semibold text-gray-900 mb-4">
           Información Personal
-        </h2>
+        </p>
 
         <div className="space-y-4">
           <div className="flex items-center gap-3">

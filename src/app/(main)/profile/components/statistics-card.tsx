@@ -5,9 +5,9 @@ const StatisticsCard = () => {
     <>
       {users.isWorker && (
         <div className="bg-secondary rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <p className="text-lg font-semibold text-gray-900 mb-4">
             Estadísticas
-          </h3>
+          </p>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-3 bg-blue-200 rounded-lg">
