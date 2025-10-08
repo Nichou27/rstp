@@ -14,7 +14,11 @@
 
 import CarouselCard from "./home/components/carousel-card";
 
-export default function Home() {
+export default async function Home(props: {
+  searchParams?: Promise<{
+    query?: string;
+  }>;
+}) {
   return (
     <main>
       <div className="w-full flex justify-center">
