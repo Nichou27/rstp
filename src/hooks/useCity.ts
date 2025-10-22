@@ -1,6 +1,6 @@
 "use client";
 
-import { getCities } from "@/app/actions/getCities";
+import { getCities } from "@/app/actions/getLocations";
 import { State } from "@prisma/client";
 import { useEffect, useState } from "react";
 /**

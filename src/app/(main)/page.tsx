@@ -12,13 +12,17 @@
  * Change License: Apache 2.0
  */
 
-import CarouselCard from "./home/components/carousel-card";
+import { ServiceList } from "./home/components/service-list";
 
 export default async function Home(props: {
   searchParams?: Promise<{
+    city?: string;
     query?: string;
   }>;
 }) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || "";
+  const city = searchParams?.city || "";
   return (
     <main>
       <div className="w-full flex justify-center">
@@ -27,7 +31,7 @@ export default async function Home(props: {
         </h2>
       </div>
       <div className="w-full flex justify-center">
-        <CarouselCard />
+        <ServiceList stateName={city} />
       </div>
       <div className="w-full flex justify-center mt-3">
         <h2 className="text-2xl p-4 w-xl font-semibold tracking-tight md:w-3xl">
@@ -35,7 +39,7 @@ export default async function Home(props: {
         </h2>
       </div>
       <div className="w-full flex justify-center">
-        <CarouselCard />
+        <ServiceList stateName={city} />
       </div>
     </main>
   );

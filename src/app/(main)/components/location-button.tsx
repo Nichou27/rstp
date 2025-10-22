@@ -20,14 +20,29 @@ import { useCity } from "@/hooks/useCity";
 import { cn } from "@/lib/utils";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { Check, ChevronDown, MapPin } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export const LocationButton = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<string>("");
   const { cities } = useCity();
 
-  const defaultLocationText = "Ubicación actual";
+  const defaultLocationText = "Seleccioná tu ubicación";
+
+  const handleLocationSelect = (city: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (city) {
+      params.set("city", city);
+    } else {
+      params.delete("city");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <div className="pl-6 pt-6 col-span-2 flex md:pt-0">
@@ -66,6 +81,12 @@ export const LocationButton = () => {
                           : city.name
                       );
                       setOpen(false);
+                      handleLocationSelect(
+                        currentValue.toLowerCase() ===
+                          selectedCity.toLowerCase()
+                          ? ""
+                          : city.name
+                      );
                     }}
                   >
                     {city.name}
