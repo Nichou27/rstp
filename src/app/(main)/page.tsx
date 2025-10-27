@@ -31,7 +31,7 @@ export default async function Home(props: {
         </h2>
       </div>
       <div className="w-full flex justify-center">
-        <ServiceList stateName={city} />
+        <ServiceList stateName={city} serviceName={query} />
       </div>
       <div className="w-full flex justify-center mt-3">
         <h2 className="text-2xl p-4 w-xl font-semibold tracking-tight md:w-3xl">
@@ -39,7 +39,7 @@ export default async function Home(props: {
         </h2>
       </div>
       <div className="w-full flex justify-center">
-        <ServiceList stateName={city} />
+        <ServiceList stateName={city} serviceName={query} />
       </div>
     </main>
   );

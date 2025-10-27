@@ -219,4 +219,76 @@ const userServices = [
   },
 ];
 
-export { professionals, services, users, userServices };
+const service = {
+  id: "123e4567-e89b-12d3-a456-426614174000",
+  title: "Clases de Guitarra Personalizadas",
+  price: 5000,
+  category: "Educación",
+  description:
+    "Ofrezco clases de guitarra personalizadas para todos los niveles. Con más de 10 años de experiencia enseñando, adapto cada lección a tu ritmo y objetivos musicales.",
+  longDescription:
+    "Mis clases incluyen teoría musical, técnica, lectura de partituras y tablaturas. Trabajo con diferentes estilos: rock, blues, jazz, clásico y folklore. Cada clase dura 60 minutos y incluye material de estudio personalizado.",
+  features: [
+    "Clases individuales de 60 minutos",
+    "Material didáctico incluido",
+    "Flexibilidad de horarios",
+    "Primera clase de prueba gratis",
+    "Seguimiento personalizado",
+  ],
+  images: [
+    "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=800",
+    "https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?w=800",
+    "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800",
+  ],
+  location: "Mendoza, Argentina",
+  availability: "Lun-Vie: 14:00-20:00",
+};
+
+const provider = {
+  name: "Carlos Rodríguez",
+  avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200",
+  rating: 4.8,
+  reviewCount: 47,
+  memberSince: "2023",
+  verified: true,
+  responseTime: "2 horas",
+  bio: "Músico profesional y profesor de guitarra con 15 años de experiencia. Graduado del Conservatorio Nacional.",
+  totalServices: 3,
+};
+
+const reviews = [
+  {
+    id: 1,
+    author: "María González",
+    rating: 5,
+    date: "2024-09-15",
+    comment:
+      "Excelente profesor, muy paciente y profesional. He aprendido muchísimo en poco tiempo.",
+  },
+  {
+    id: 2,
+    author: "Juan Pérez",
+    rating: 5,
+    date: "2024-08-22",
+    comment:
+      "Las clases son muy didácticas y el material de apoyo es de primera calidad.",
+  },
+  {
+    id: 3,
+    author: "Laura Martínez",
+    rating: 4,
+    date: "2024-07-10",
+    comment:
+      "Muy recomendable. Carlos se adapta perfectamente a tu nivel y objetivos.",
+  },
+];
+
+export {
+  professionals,
+  services,
+  users,
+  userServices,
+  service,
+  provider,
+  reviews,
+};
