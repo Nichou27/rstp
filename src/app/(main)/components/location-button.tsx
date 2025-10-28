@@ -1,5 +1,6 @@
 "use client";
 
+import { useCityContext } from "@/app/context/city-context";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -26,9 +27,9 @@ import { useState } from "react";
 export const LocationButton = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedCity, setSelectedCity] = useState<string>("");
+  const { selectedCity, setSelectedCity } = useCityContext();
   const { cities } = useCity();
 
   const defaultLocationText = "Seleccioná tu ubicación";
@@ -74,19 +75,16 @@ export const LocationButton = () => {
                     key={city.id}
                     value={city.name}
                     onSelect={(currentValue) => {
-                      setSelectedCity(
-                        currentValue.toLowerCase() ===
-                          selectedCity.toLowerCase()
-                          ? ""
-                          : city.name
-                      );
+                      const normalizedSelected =
+                        selectedCity?.toLowerCase() ?? "";
+                      const isSame =
+                        currentValue.toLowerCase() === normalizedSelected;
+                      const newCity = isSame ? "" : city.name;
+
+                      setSelectedCity(newCity);
                       setOpen(false);
-                      handleLocationSelect(
-                        currentValue.toLowerCase() ===
-                          selectedCity.toLowerCase()
-                          ? ""
-                          : city.name
-                      );
+                      handleLocationSelect(newCity);
+                      push(`/?city=${newCity}`);
                     }}
                   >
                     {city.name}

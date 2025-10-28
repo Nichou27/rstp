@@ -1,6 +1,8 @@
 import { Toaster } from "sonner";
 import "src/app/globals.css";
 import "leaflet/dist/leaflet.css";
+import { CityProvider } from "./context/city-context";
+import { CityURLManager } from "./(main)/components/url-manager";
 
 export default function RootLayout({
   children,
@@ -10,8 +12,11 @@ export default function RootLayout({
   return (
     <html lang="es" className="">
       <body>
-        {children}
-        <Toaster richColors position="top-right" />
+        <CityProvider>
+          <CityURLManager />
+          {children}
+          <Toaster richColors position="top-right" />
+        </CityProvider>
       </body>
     </html>
   );
