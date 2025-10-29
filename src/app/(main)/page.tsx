@@ -12,7 +12,9 @@
  * Change License: Apache 2.0
  */
 
+import { Suspense } from "react";
 import { ServiceList } from "./home/components/service-list";
+import CarouselCardSkeleton from "./home/components/skeletons/carousel-card-skeleton";
 
 export default async function Home(props: {
   searchParams?: Promise<{
@@ -31,7 +33,9 @@ export default async function Home(props: {
         </h2>
       </div>
       <div className="w-full flex justify-center">
-        <ServiceList stateName={city} serviceName={query} />
+        <Suspense fallback={<CarouselCardSkeleton />}>
+          <ServiceList stateName={city} serviceName={query} />
+        </Suspense>
       </div>
       <div className="w-full flex justify-center mt-3">
         <h2 className="text-2xl p-4 w-xl font-semibold tracking-tight md:w-3xl">

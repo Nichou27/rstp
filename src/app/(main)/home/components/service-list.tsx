@@ -5,6 +5,7 @@ import {
 } from "@/app/actions/getServices";
 import CarouselCard from "./carousel-card";
 import { ServiceWithRelations } from "@/types/service-types";
+import CarouselCardEmpty from "./empty-states/carousel-card-empty";
 
 interface ServiceListProps {
   stateName?: string;
@@ -23,6 +24,10 @@ export async function ServiceList({
     services = await getServicesByStateName(stateName);
   } else if (serviceName) {
     services = await getServicesByName(serviceName);
+  }
+
+  if (!services || services.length === 0) {
+    return <CarouselCardEmpty />
   }
 
   return (
