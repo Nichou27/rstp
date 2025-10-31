@@ -43,7 +43,9 @@ export default async function Home(props: {
         </h2>
       </div>
       <div className="w-full flex justify-center">
-        <ServiceList stateName={city} serviceName={query} />
+        <Suspense fallback={<CarouselCardSkeleton />}>
+          <ServiceList stateName={city} serviceName={query} />
+        </Suspense>
       </div>
     </main>
   );

@@ -1,4 +1,3 @@
-// src/components/ui/skeletons/ServiceCardSkeleton.tsx
 import {
   Card,
   CardHeader,

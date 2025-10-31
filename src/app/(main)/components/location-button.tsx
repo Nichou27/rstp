@@ -32,11 +32,17 @@ export const LocationButton = () => {
   const { selectedCity, setSelectedCity } = useCityContext();
   const { cities } = useCity();
 
-  const defaultLocationText = "Seleccioná tu ubicación";
+  const buttonString = () => {
+    const params = new URLSearchParams(searchParams);
+    if (!params) {
+      return "Selecciona tu ubicación";
+    } else {
+      return params.get("city");
+    }
+  };
 
   const handleLocationSelect = (city: string) => {
     const params = new URLSearchParams(searchParams);
-
     if (city) {
       params.set("city", city);
     } else {
@@ -52,7 +58,7 @@ export const LocationButton = () => {
           <Button className="flex grow h-full bg-secondary hover:bg-secondary-hover active:bg-secondary-active">
             <MapPin className="text-secondary-foreground mr-2" />
             <p className="text-secondary-foreground flex-1 text-left">
-              {selectedCity || defaultLocationText}
+              {buttonString()}
             </p>
             <ChevronDown className="text-secondary-foreground" />
           </Button>
