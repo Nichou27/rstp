@@ -34,7 +34,7 @@ export const LocationButton = () => {
 
   const buttonString = () => {
     const params = new URLSearchParams(searchParams);
-    if (!params) {
+    if (!params.get("city")) {
       return "Selecciona tu ubicación";
     } else {
       return params.get("city");
