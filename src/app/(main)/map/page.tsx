@@ -1,22 +1,26 @@
-"use client";
+import { getCoordinatesByCity } from "@/app/actions/getCoordinates";
+import MapContainer from "./components/map-container";
 
-import dynamic from "next/dynamic";
+type SearchParams = {
+  city?: string;
+  query?: string;
+};
 
-const LeafletMap = dynamic(() => import("@/app/(main)/map/components/map"), {
-  ssr: false,
-});
+interface MapProps {
+  searchParams?: Promise<SearchParams>;
+}
 
-export default function Map() {
+export default async function Map(props: MapProps) {
+  const data = await props.searchParams;
+  const city = data?.city;
+  const coordinates = await getCoordinatesByCity(city);
+
   return (
-    <main className="flex flex-col w-full justify-center">
-      <div className="flex w-full justify-center">
-        <h2 className="scroll-m-20 w-4xl pb-2 pl-2 text-xl font-semibold tracking-tight first:mt-0">
-          Encontrá los mejores servicios cerca de tu zona
-        </h2>
-      </div>
-      <div className="flex justify-center w-full">
-        <LeafletMap />
-      </div>
-    </main>
+    <div className="flex flex-col w-full h-screen justify-start">
+      <MapContainer
+        latitude={coordinates.latitude}
+        longitude={coordinates.longitude}
+      />
+    </div>
   );
 }

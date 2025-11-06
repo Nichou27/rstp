@@ -10,8 +10,14 @@ const customIcon = new Icon({
   iconAnchor: [25, 50],
 });
 
-export default function LeafletMap() {
-  const [mounted, setMounted] = useState(false);
+interface leafletMapProps {
+  latitude: number;
+  longitude: number;
+}
+
+export default function LeafletMap({ latitude, longitude }: leafletMapProps) {
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [interactive, setInteractive] = useState<boolean>(true);
 
   useEffect(() => {
     setMounted(true);
@@ -21,17 +27,18 @@ export default function LeafletMap() {
   }, []);
 
   if (!mounted)
-    return <div className="h-96 w-full max-w-4xl bg-gray-100 pt-3" />;
+    return <div className="h-full w-full max-w-4xl z-0 bg-gray-300 pt-3" />;
 
-  const position: [number, number] = [-33.372893, -69.147673];
+  const position: [number, number] = [latitude, longitude];
 
   return (
     <MapContainer
       key="map"
       center={position}
       zoom={13}
-      scrollWheelZoom={true}
-      className="h-96 w-full max-w-4xl pt-3"
+      scrollWheelZoom={interactive}
+      dragging={interactive}
+      className="h-full w-full max-w-4xl pt-3 z-0"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
