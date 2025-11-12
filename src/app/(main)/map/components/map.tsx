@@ -33,7 +33,7 @@ export default function LeafletMap({ latitude, longitude }: leafletMapProps) {
   return (
     <MapContainer
       key="map"
-      center={position}
+      center={position ?? [-34.61315, -58.37723]}
       zoom={13}
       scrollWheelZoom={true}
       dragging={true}

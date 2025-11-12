@@ -12,9 +12,12 @@ export function CityURLManager() {
 
   useEffect(() => {
     const isHomePage = pathname === "/";
+    const isMapPage = pathname === "/map";
 
     if (isHomePage && selectedCity && selectedCity !== urlCity) {
-      router.replace(`/?city=${selectedCity}`);
+      router.replace(`${pathname}?city=${selectedCity}`);
+    } else if (isMapPage && selectedCity && selectedCity !== urlCity) {
+      router.replace(`${pathname}?city=${selectedCity}`);
     }
   }, [pathname, selectedCity, urlCity, router]);
 
