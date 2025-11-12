@@ -17,7 +17,6 @@ interface leafletMapProps {
 
 export default function LeafletMap({ latitude, longitude }: leafletMapProps) {
   const [mounted, setMounted] = useState<boolean>(false);
-  const [interactive, setInteractive] = useState<boolean>(true);
 
   useEffect(() => {
     setMounted(true);
@@ -36,8 +35,8 @@ export default function LeafletMap({ latitude, longitude }: leafletMapProps) {
       key="map"
       center={position}
       zoom={13}
-      scrollWheelZoom={interactive}
-      dragging={interactive}
+      scrollWheelZoom={true}
+      dragging={true}
       className="h-full w-full max-w-4xl pt-3 z-0"
     >
       <TileLayer

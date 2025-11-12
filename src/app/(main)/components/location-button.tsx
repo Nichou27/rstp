@@ -27,19 +27,12 @@ import { useState } from "react";
 export const LocationButton = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { replace, push } = useRouter();
+  const { replace } = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const { selectedCity, setSelectedCity } = useCityContext();
   const { cities } = useCity();
 
-  const buttonString = () => {
-    const params = new URLSearchParams(searchParams);
-    if (!params.get("city")) {
-      return "Selecciona tu ubicación";
-    } else {
-      return params.get("city");
-    }
-  };
+  const buttonString = selectedCity || "Selecciona tu ubicación";
 
   const handleLocationSelect = (city: string) => {
     const params = new URLSearchParams(searchParams);
@@ -58,7 +51,7 @@ export const LocationButton = () => {
           <Button className="flex grow h-full bg-secondary hover:bg-secondary-hover active:bg-secondary-active">
             <MapPin className="text-secondary-foreground mr-2" />
             <p className="text-secondary-foreground flex-1 text-left">
-              {buttonString()}
+              {buttonString}
             </p>
             <ChevronDown className="text-secondary-foreground" />
           </Button>
@@ -90,7 +83,6 @@ export const LocationButton = () => {
                       setSelectedCity(newCity);
                       setOpen(false);
                       handleLocationSelect(newCity);
-                      push(`/?city=${newCity}`);
                     }}
                   >
                     {city.name}
