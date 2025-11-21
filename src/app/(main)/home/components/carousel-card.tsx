@@ -67,10 +67,9 @@ export const CarouselCard = ({
         <Carousel className="w-full">
           <CarouselContent>
             {imageUrl.map((url) => (
-              <CarouselItem key={id} className="flex justify-center">
+              <CarouselItem key={url} className="flex justify-center">
                 <div className="relative aspect-square w-full max-w-sm overflow-hidden rounded-lg">
                   <Image
-                    key={id}
                     src={url}
                     alt={description}
                     fill

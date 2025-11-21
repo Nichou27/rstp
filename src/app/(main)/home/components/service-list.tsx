@@ -27,7 +27,7 @@ export async function ServiceList({
   }
 
   if (!services || services.length === 0) {
-    return <CarouselCardEmpty />
+    return <CarouselCardEmpty />;
   }
 
   return (
@@ -43,7 +43,7 @@ export async function ServiceList({
           rating={Number(service.user.rating)}
           category={service.category.name}
           price={Number(service.price)}
-          imageUrl={["/placeholder.png"]}
+          imageUrl={service.imageUrl}
           href={`/service/${service.id}`}
         />
       ))}
