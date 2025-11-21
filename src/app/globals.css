@@ -158,3 +158,21 @@ a {
     @apply bg-background text-foreground;
   }
 }
+
+.leaflet-popup-content-wrapper {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0.75rem !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: auto !important;
+  max-width: 320px !important;
+}
+
+@media (max-width: 640px) {
+  .leaflet-popup-content {
+    max-width: 260px !important;
+  }
+}

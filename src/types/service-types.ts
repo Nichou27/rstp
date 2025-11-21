@@ -23,3 +23,13 @@ export type ServiceWithRelations = Prisma.ServiceGetPayload<{
     };
   };
 }>;
+
+export interface MapService {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  imageUrl: string[];
+  latitude: number;
+  longitude: number;
+}
