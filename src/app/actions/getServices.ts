@@ -169,3 +169,22 @@ export async function getMapServices(
     return [];
   }
 }
+
+export async function getServiceById(
+  id: string
+): Promise<ServiceWithRelations | null> {
+  if (!id) return null;
+  try {
+    const service: ServiceWithRelations | null =
+      await prisma.service.findUnique({
+        where: {
+          id: id,
+        },
+        ...ServiceWithRelationsQuery,
+      });
+    return service;
+  } catch (error) {
+    console.error("Error fetching service by ID:", error);
+    return null;
+  }
+}
