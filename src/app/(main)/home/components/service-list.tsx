@@ -35,7 +35,6 @@ export async function ServiceList({
       {services.map((service) => (
         <CarouselCard
           key={service.id}
-          id={service.id}
           name={service.name}
           city={service.direction?.zone.state.name || ""}
           zone={service.direction?.zone.name || ""}

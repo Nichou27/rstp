@@ -1,4 +1,4 @@
-import { MapService, ServiceWithRelations } from "./service-types";
+import { MapService } from "./service-types";
 
 export interface Coordinates {
   latitude: number;

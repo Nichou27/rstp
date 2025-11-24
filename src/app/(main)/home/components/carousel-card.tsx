@@ -18,7 +18,6 @@ import { Star } from "lucide-react";
 import Link from "next/link";
 
 export const CarouselCard = ({
-  id,
   name,
   description,
   imageUrl,
@@ -29,7 +28,6 @@ export const CarouselCard = ({
   zone,
   href,
 }: {
-  id: string;
   name: string;
   description: string;
   imageUrl: string[];
