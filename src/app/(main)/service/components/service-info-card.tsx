@@ -33,7 +33,9 @@ export default function ServiceInfoCard({ service }: ServiceInfoCardProps) {
               </div>
               <div className="flex items-center gap-1.5">
                 <Clock size={18} className="text-primary/70" />
-                <span className="text-sm font-medium">{service.duration}</span>
+                <span className="text-sm font-medium">
+                  {service.duration}hs.
+                </span>
               </div>
             </div>
           </div>

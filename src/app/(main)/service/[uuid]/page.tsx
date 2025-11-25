@@ -33,7 +33,17 @@ export default async function ServicePage(props: ServicePageProps) {
             <ServiceInfoCard service={service} />
           </div>
           <div className="space-y-6">
-            <ServiceContactCard />
+            <ServiceContactCard
+              price={Number(service.price)}
+              providerName={
+                service.user.firstName + " " + service.user.lastName
+              }
+              responseTime={service.duration?.toString() || ""}
+              contactInfo={{
+                phone: service.user.phoneNumber || "",
+                email: service.user.email,
+              }}
+            />
             <ProviderCard />
           </div>
         </div>
