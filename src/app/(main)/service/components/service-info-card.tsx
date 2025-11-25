@@ -12,7 +12,7 @@ interface ServiceInfoCardProps {
 
 export default function ServiceInfoCard({ service }: ServiceInfoCardProps) {
   return (
-    <Card className="border-none shadow-none sm:border sm:shadow-sm">
+    <Card className="sm:border sm:shadow-sm">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="space-y-3 flex-1 pr-4">

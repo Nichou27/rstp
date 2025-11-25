@@ -44,7 +44,7 @@ export default async function ServicePage(props: ServicePageProps) {
                 email: service.user.email,
               }}
             />
-            <ProviderCard />
+            <ProviderCard providerId={service.userId} />
           </div>
         </div>
       </div>

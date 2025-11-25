@@ -37,7 +37,7 @@ export default function ServiceContactCard({
 
   return (
     <div>
-      <Card className="sticky top-24 border-none shadow-none md:border md:shadow-sm">
+      <Card className="sticky top-24 md:border md:shadow-sm">
         <CardContent className="pt-6">
           <div className="mb-6">
             <div className="flex items-baseline gap-2 mb-2">
