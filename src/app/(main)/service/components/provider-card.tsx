@@ -15,7 +15,13 @@ export default async function ProviderCard({ providerId }: ProviderCardProps) {
   const provider = await getUserById(providerId);
 
   if (!provider) {
-    return <div>Proveedor no encontrado</div>;
+    return (
+      <Card className="h-fit border-red-200 bg-red-50">
+        <CardContent className="pt-6 text-red-600">
+          No se encontró información del proveedor.
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

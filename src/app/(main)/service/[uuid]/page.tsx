@@ -3,6 +3,8 @@ import ServiceInfoCard from "../components/service-info-card";
 import ServiceContactCard from "../components/service-contact-card";
 import ProviderCard from "../components/provider-card";
 import { getServiceById } from "@/app/actions/getServices";
+import { Suspense } from "react";
+import ProviderCardSkeleton from "../components/skeletons/provider-card-skeleton";
 
 interface ServicePageProps {
   params?: Promise<{
@@ -44,7 +46,9 @@ export default async function ServicePage(props: ServicePageProps) {
                 email: service.user.email,
               }}
             />
-            <ProviderCard providerId={service.userId} />
+            <Suspense fallback={<ProviderCardSkeleton />}>
+              <ProviderCard providerId={service.userId} />
+            </Suspense>
           </div>
         </div>
       </div>
