@@ -32,7 +32,7 @@ export default function ServiceImagesCarousel({
             className="pl-2 md:pl-4 basis-[90%] md:basis-full"
           >
             <div className="p-1">
-              <Card className="overflow-hidden border-0 shadow-none">
+              <Card className="overflow-hidden py-0 border-0 shadow-none">
                 <CardContent className="relative aspect-video bg-muted rounded-xl overflow-hidden p-0">
                   <Image
                     src={src}

@@ -12,7 +12,7 @@ interface ServiceInfoCardProps {
 
 export default function ServiceInfoCard({ service }: ServiceInfoCardProps) {
   return (
-    <Card className="sm:border sm:shadow-sm">
+    <Card className="bg-secondary sm:border sm:shadow-sm">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="space-y-3 flex-1 pr-4">
@@ -54,8 +54,10 @@ export default function ServiceInfoCard({ service }: ServiceInfoCardProps) {
       <CardContent className="space-y-6">
         <Tabs defaultValue="description" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="description">Descripción</TabsTrigger>
-            <TabsTrigger value="reviews">
+            <TabsTrigger value="description" className="bg-gray-200">
+              Descripción
+            </TabsTrigger>
+            <TabsTrigger value="reviews" className="bg-gray-200">
               Reseñas ({service.user.firstName})
             </TabsTrigger>
           </TabsList>

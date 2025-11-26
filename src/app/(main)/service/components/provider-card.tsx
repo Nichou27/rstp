@@ -25,7 +25,7 @@ export default async function ProviderCard({ providerId }: ProviderCardProps) {
   }
 
   return (
-    <Card className="h-fit">
+    <Card className="h-fit bg-secondary">
       <CardHeader>
         <CardTitle className="text-lg">Sobre el proveedor</CardTitle>
       </CardHeader>
